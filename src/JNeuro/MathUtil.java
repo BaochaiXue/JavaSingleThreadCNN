@@ -37,10 +37,10 @@ public class MathUtil {
         return result;
     }
 
-    public static double[][] zeros(final int height, final int weight) {
-        double[][] result = new double[height][weight];
+    public static double[][] zeros(final int height, final int width) {
+        double[][] result = new double[height][width];
         for (int i = 0; i < height; i++) {
-            for (int j = 0; j < weight; j++) {
+            for (int j = 0; j < width; j++) {
                 result[i][j] = 0;
             }
         }
@@ -87,10 +87,10 @@ public class MathUtil {
         return transpose;
     }
 
-    public static double[][] randoms(final int height, final int weight) {
-        double[][] result = new double[height][weight];
+    public static double[][] randoms(final int height, final int width) {
+        double[][] result = new double[height][width];
         for (int i = 0; i < height; i++) {
-            for (int j = 0; j < weight; j++) {
+            for (int j = 0; j < width; j++) {
                 result[i][j] = Math.random();
             }
         }
@@ -169,12 +169,12 @@ public class MathUtil {
         return vector;
     }
 
-    public static double[][][] reshape(final double[][] vector, final int depth, final int height, final int weight) {
-        double[][][] output = new double[depth][height][weight];
+    public static double[][][] reshape(final double[][] vector, final int depth, final int height, final int width) {
+        double[][][] output = new double[depth][height][width];
         int input_index = 0;
         for (int i = 0; i < depth; i++) {
             for (int j = 0; j < height; j++) {
-                for (int k = 0; k < weight; k++) {
+                for (int k = 0; k < width; k++) {
                     output[i][j][k] = vector[0][input_index];
                     input_index++;
                 }
