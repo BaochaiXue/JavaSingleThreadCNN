@@ -43,11 +43,12 @@ public class ConvolutionalNeuralNetwork {
     }
 
     public void train(int trainningSize, ImageDataFrame trainningData, String path) throws IOException {
+        this.load(path);
         int trueLabel = 0;
         double loss = 0;
         double accuracy = 0;
         double totalAccuracy = 0.0;
-        double learnRate = 0.001;
+        double learnRate = 0.005;
         double[][][] softmaxResult3D;
         double lastAccuracy = 0.0;
         for (int step = 1; step <= trainningSize; step++) {
@@ -92,8 +93,6 @@ public class ConvolutionalNeuralNetwork {
             double[][][] softmaxResult3D = this.forward(pixels);
             double[][] softmaxResult = MathUtil.flatten(softmaxResult3D);
             totalAccuracy += correct_label == MathUtil.argmax(softmaxResult) ? 1 : 0;
-            System.out.println("step: " + step + " label: " + correct_label + " predict: "
-                    + MathUtil.argmax(softmaxResult) + " accuracy: " + totalAccuracy / step * 100 + "%");
         }
         System.out.println("test average accuracy:- " + totalAccuracy / testSize * 100 + "%");
     }
