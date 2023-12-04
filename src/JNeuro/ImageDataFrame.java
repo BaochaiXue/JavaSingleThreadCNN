@@ -34,7 +34,7 @@ public class ImageDataFrame {
         return ImageIO.read(new File(path));
     }
 
-    public static double[][][] digitize(BufferedImage image) {
+    private static double[][][] digitize(BufferedImage image) {
         int width = image.getWidth();
         int height = image.getHeight();
         int[] pixels = image.getRGB(0, 0, width, height, null, 0, width);// get pixels
