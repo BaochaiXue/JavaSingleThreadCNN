@@ -2,122 +2,85 @@ package JNeuro;
 
 public class MathUtil {
 
-    public static double[][] matrixHadamardProduct(double[][] m1, double[][] m2) {
-        double[][] result = new double[m1.length][m2[0].length];
-        for (int i = 0; i < m1.length; i++) {
-            for (int j = 0; j < m2[0].length; j++) {
-                for (int k = 0; k < m1[0].length; k++) {
-                    result[i][j] += m1[i][k] * m2[k][j];
+    public static double[][] matrixHadamardProduct(final double[][] matrixA, final double[][] matrixB) {
+        double[][] result = new double[matrixA.length][matrixB[0].length];
+        for (int i = 0; i < matrixA.length; i++) {
+            for (int j = 0; j < matrixB[0].length; j++) {
+                for (int k = 0; k < matrixA[0].length; k++) {
+                    result[i][j] += matrixA[i][k] * matrixB[k][j];
                 }
             }
         }
         return result;
     }
 
-    public static double[][] matrixAdd(double[][] m1, double[][] m2) {
-        double[][] result = new double[m1.length][m1[0].length];
-        for (int i = 0; i < m1.length; i++) {
-            for (int j = 0; j < m1[0].length; j++) {
-                result[i][j] = m1[i][j] + m2[i][j];
+    public static double[][] matrixAdd(final double[][] matrix1, final double[][] matrix2) {
+        double[][] result = new double[matrix1.length][matrix1[0].length];
+        for (int i = 0; i < matrix1.length; i++) {
+            for (int j = 0; j < matrix1[0].length; j++) {
+                result[i][j] = matrix1[i][j] + matrix2[i][j];
             }
         }
         return result;
     }
 
-    public static double[][] zeros(int size) {
-        double[][] result = new double[1][size];
-        for (int i = 0; i < size; i++) {
-            result[0][i] = 0.0;
-        }
-        return result;
-    }
-
-    public static double[][] fullfill(int size, double value) {
-        double[][] result = new double[1][size];
-        for (int i = 0; i < result[0].length; i++) {
-            result[0][i] = value;
-        }
-        return result;
-    }
-
-    public static double[][] exp(double[][] v) {
-        double[][] exp = new double[1][v[0].length];
-        for (int i = 0; i < v[0].length; i++) {
-            exp[0][i] = (double) Math.exp(v[0][i]);
-        }
-        return exp;
-    }
-
-    public static double[][] vectorScaling(double[][] v, double scale) {
-        double[][] scl = new double[1][v[0].length];
-        for (int i = 0; i < v[0].length; i++) {
-            scl[0][i] = (double) v[0][i] * scale;
-        }
-        return scl;
-    }
-
-    public static double[][] matrixScaling(double[][] mat, double scale) {
-        double[][] scl = new double[mat.length][mat[0].length];
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[0].length; j++) {
-                scl[i][j] = (double) mat[i][j] * scale;
+    public static double[][] zeros(final int height, final int weight) {
+        double[][] result = new double[height][weight];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < weight; j++) {
+                result[i][j] = 0;
             }
         }
-        return scl;
+        return result;
     }
 
-    public static double sum(double[][] v) {
+    public static double[][] exp(final double[][] matrix) {
+        double[][] expMatrix = new double[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                expMatrix[i][j] = Math.exp(matrix[i][j]);
+            }
+        }
+        return expMatrix;
+    }
+
+    public static double[][] scaling(final double[][] matrix, final double scale) {
+        double[][] matrixScaling = new double[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                matrixScaling[i][j] = (double) matrix[i][j] * scale;
+            }
+        }
+        return matrixScaling;
+    }
+
+    public static double sum(final double[][] matrix) {
         double sum = 0;
-        for (int i = 0; i < v[0].length; i++) {
-            sum += v[0][i];
+        for (double[] row : matrix) {
+            for (double element : row) {
+                sum += element;
+            }
         }
         return sum;
     }
 
-    public static double[][] transpose(double[][] mat) {
-        double[][] transpose = new double[mat[0].length][mat.length];
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[0].length; j++) {
-                transpose[j][i] = mat[i][j];
+    public static double[][] transpose(final double[][] matrix) {
+        double[][] transpose = new double[matrix[0].length][matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                transpose[j][i] = matrix[i][j];
             }
         }
         return transpose;
     }
 
-    public static double squareMagnitude(double[][] v) {
-        double sq_sum = 0;
-        for (int i = 0; i < v[0].length; i++) {
-            sq_sum += v[0][i] * v[0][i];
-        }
-        return sq_sum;
-    }
-
-    public static double[][] random(int h, int w) {
-        double[][] result = new double[h][w];
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
-                result[i][j] = (double) Math.random();
+    public static double[][] randoms(final int height, final int weight) {
+        double[][] result = new double[height][weight];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < weight; j++) {
+                result[i][j] = Math.random();
             }
         }
-        return result;
-    }
-
-    public static double[][] zeros(int h, int w) {
-        double[][] result = new double[h][w];
-        for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
-                result[i][j] = (double) Math.random();
-            }
-        }
-        return result;
-    }
-
-    public static double[][] random(int w) {
-        double[][] result = new double[1][w];
-        for (int j = 0; j < w; j++) {
-            result[0][j] = (double) Math.random();
-        }
-
         return result;
     }
 

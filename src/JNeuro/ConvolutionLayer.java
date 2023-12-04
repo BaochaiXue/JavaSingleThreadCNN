@@ -7,7 +7,7 @@ public class ConvolutionLayer implements Layer {
     public static double[][][] createFilters(int depth, int size) {
         double[][][] result = new double[depth][size][size];
         for (int k = 0; k < depth; k++) {
-            result[k] = MathUtil.random(size, size);
+            result[k] = MathUtil.randoms(size, size);
         }
         return result;
     }
@@ -48,7 +48,7 @@ public class ConvolutionLayer implements Layer {
                 for (int j = 0; j < this.sensingFields[0][0].length; j++) {
                     for (int k = 0; k < filters.length; k++) {
                         deltaFilters[k] = MathUtil.matrixAdd(deltaFilters[k],
-                                MathUtil.matrixScaling(MathUtil.submatrixAndFillZero(back[s * filters.length + k], i,
+                                MathUtil.scaling(MathUtil.submatrixAndFillZero(back[s * filters.length + k], i,
                                         i + filters[0].length, j, j + filters[0][0].length),
                                         this.sensingFields[s][i][j]));
                     }
@@ -57,7 +57,7 @@ public class ConvolutionLayer implements Layer {
         }
 
         for (int m = 0; m < filters.length; m++) {
-            filters[m] = MathUtil.matrixAdd(filters[m], MathUtil.matrixScaling(deltaFilters[m], -learning_rate));
+            filters[m] = MathUtil.matrixAdd(filters[m], MathUtil.scaling(deltaFilters[m], -learning_rate));
         }
 
         double[][][] result = new double[sensingFields.length][sensingFields[0].length][sensingFields[0][0].length];

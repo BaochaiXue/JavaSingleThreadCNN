@@ -23,8 +23,8 @@ public class SoftMaxLayer implements Layer {
         this.outputHeight = outputHeight;
         this.outputWidth = outputWidth;
         int outPutSize = outputDepth * outputHeight * outputWidth;
-        this.weights = MathUtil.matrixScaling(MathUtil.random(inputSize, outPutSize), 1.0 / inputSize);
-        this.bias = MathUtil.zeros(outPutSize);
+        this.weights = MathUtil.scaling(MathUtil.randoms(inputSize, outPutSize), 1.0 / inputSize);
+        this.bias = MathUtil.zeros(1, outPutSize);
 
     }
 
@@ -35,7 +35,7 @@ public class SoftMaxLayer implements Layer {
         double[][] exp = MathUtil.exp(output);
         double inverseFactor = 1 / MathUtil.sum(exp);
         this.input = readIn;
-        return MathUtil.reshape(MathUtil.vectorScaling(exp, inverseFactor), outputDepth, outputHeight, outputWidth);
+        return MathUtil.reshape(MathUtil.scaling(exp, inverseFactor), outputDepth, outputHeight, outputWidth);
     }
 
     @Override
@@ -51,16 +51,16 @@ public class SoftMaxLayer implements Layer {
             if (grad == 0) {
                 continue;
             }
-            double[][] outputMove = MathUtil.vectorScaling(exp, -exp[0][i] / (S * S));
+            double[][] outputMove = MathUtil.scaling(exp, -exp[0][i] / (S * S));
             outputMove[0][i] = exp[0][i] * (S - exp[0][i]) / (S * S);
-            delta = MathUtil.matrixScaling(outputMove, grad);
+            delta = MathUtil.scaling(outputMove, grad);
             double[][] deltaWeight = MathUtil.transpose(input);
             double[][] moveInput = weights;
             double[][] moveWeight = MathUtil.matrixHadamardProduct(deltaWeight, delta);
             deltaInput = MathUtil.matrixHadamardProduct(moveInput, MathUtil.transpose(delta));
             double[][] d_L_d_b = delta;
-            weights = MathUtil.matrixAdd(MathUtil.matrixScaling(moveWeight, -learning_rate), weights);
-            bias = MathUtil.matrixAdd(MathUtil.matrixScaling(d_L_d_b, -learning_rate), bias);
+            weights = MathUtil.matrixAdd(MathUtil.scaling(moveWeight, -learning_rate), weights);
+            bias = MathUtil.matrixAdd(MathUtil.scaling(d_L_d_b, -learning_rate), bias);
         }
         return MathUtil.reshape(MathUtil.transpose(deltaInput), depth, height, width);
     }

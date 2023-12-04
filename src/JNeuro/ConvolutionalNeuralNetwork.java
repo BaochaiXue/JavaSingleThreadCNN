@@ -46,7 +46,7 @@ public class ConvolutionalNeuralNetwork {
             double[][] softmaxResult = MathUtil.flatten(softmaxResult3D);
             loss += (double) -Math.log(softmaxResult[0][correct_label]);
             accuracy += correct_label == MathUtil.argmax(softmaxResult) ? 1 : 0;
-            double[][] gradient = MathUtil.zeros(10);
+            double[][] gradient = MathUtil.zeros(1, 10);
             gradient[0][correct_label] = -1 / softmaxResult[0][correct_label];
             this.backPropagation(MathUtil.reshape(gradient, 1, 1, 10), learnRate);
             if (step % 1000 == 0) {
