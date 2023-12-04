@@ -1,11 +1,17 @@
 package JNeuro;
 
-public class PoolingLayer implements Layer {
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+public class PoolingLayer implements Layer, java.io.Serializable {
 
     private double[][][] input;
     private double[][][] output;
 
-    public double[][] pooling(double[][] img) {
+    private double[][] pooling(double[][] img) {
         double[][] pool = new double[img.length / 2][img[0].length / 2];
         for (int i = 0; i < pool.length - 1; i++) {
             for (int j = 0; j < pool[0].length - 1; j++) {
@@ -45,5 +51,40 @@ public class PoolingLayer implements Layer {
             }
         }
         return result;
+    }
+
+    @Override
+    public void save(String path) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+        } catch (IOException i) {
+            System.out.println("we can not save the model pooling layer by the path: " + path);
+            i.printStackTrace();
+        }
+    }
+
+    @Override
+    public void load(String path) {
+        try {
+            FileInputStream fileIn = new FileInputStream(path);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            PoolingLayer layer = (PoolingLayer) in.readObject();
+            this.input = layer.input;
+            this.output = layer.output;
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            System.out.println("we can not load the model pooling layer by the path: " + path);
+            i.printStackTrace();
+            return;
+        } catch (ClassNotFoundException c) {
+            System.out.println("this class can transfer to pooling layer");
+            c.printStackTrace();
+            return;
+        }
     }
 }

@@ -1,10 +1,16 @@
 package JNeuro;
 
-public class ConvolutionLayer implements Layer {
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+public class ConvolutionLayer implements Layer, java.io.Serializable {
     private double[][][] sensingFields;
     private double[][][] filters;
 
-    public static double[][][] createFilters(int depth, int size) {
+    private static double[][][] createFilters(int depth, int size) {
         double[][][] result = new double[depth][size][size];
         for (int k = 0; k < depth; k++) {
             result[k] = MathUtil.randoms(size, size);
@@ -16,7 +22,7 @@ public class ConvolutionLayer implements Layer {
         this.filters = createFilters(depth, filterSize);
     }
 
-    public double[][] convolve(double[][] image, double[][] filter) {
+    private double[][] convolve(double[][] image, double[][] filter) {
         double[][] result = new double[image.length][image[0].length];
         for (int i = 0; i < image.length; i++) {
             for (int j = 0; j < image[0].length; j++) {
@@ -79,6 +85,41 @@ public class ConvolutionLayer implements Layer {
             }
         }
         return result;
+    }
+
+    @Override
+    public void save(String path) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+        } catch (IOException i) {
+            System.out.println("we can not save the model convolutional layer by the path: " + path);
+            i.printStackTrace();
+        }
+    }
+
+    @Override
+    public void load(String path) {
+        try {
+            FileInputStream fileIn = new FileInputStream(path);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            ConvolutionLayer convolutionLayerLayer = (ConvolutionLayer) in.readObject();
+            this.filters = convolutionLayerLayer.filters;
+            this.sensingFields = convolutionLayerLayer.sensingFields;
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            System.out.println("ConvolutionLayer layer can not be found in the path: " + path);
+            i.printStackTrace();
+            return;
+        } catch (ClassNotFoundException c) {
+            System.out.println("this class can transfer to ConvolutionLayer layer");
+            c.printStackTrace();
+            return;
+        }
     }
 
 }

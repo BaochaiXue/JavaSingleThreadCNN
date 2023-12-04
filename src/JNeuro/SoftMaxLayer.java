@@ -1,7 +1,13 @@
 
 package JNeuro;
 
-public class SoftMaxLayer implements Layer {
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+public class SoftMaxLayer implements Layer, java.io.Serializable {
 
     private double[][] weights;
     private double[][] input;
@@ -28,6 +34,7 @@ public class SoftMaxLayer implements Layer {
 
     }
 
+    @Override
     public double[][][] forward(double[][][] input) {
         double[][] readIn = MathUtil.flatten(input);
         this.output = new double[1][outputDepth * outputHeight * outputWidth];
@@ -65,4 +72,46 @@ public class SoftMaxLayer implements Layer {
         return MathUtil.reshape(MathUtil.transpose(deltaInput), depth, height, width);
     }
 
+    @Override
+    public void save(String path) {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(path);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+        } catch (IOException i) {
+            System.out.println("we can not save the model softmax layer by the path: " + path);
+            i.printStackTrace();
+        }
+    }
+
+    @Override
+    public void load(String path) {
+        try {
+            FileInputStream fileIn = new FileInputStream(path);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            SoftMaxLayer layer = (SoftMaxLayer) in.readObject();
+            this.weights = layer.weights;
+            this.bias = layer.bias;
+            this.input = layer.input;
+            this.output = layer.output;
+            this.depth = layer.depth;
+            this.height = layer.height;
+            this.width = layer.width;
+            this.outputDepth = layer.outputDepth;
+            this.outputHeight = layer.outputHeight;
+            this.outputWidth = layer.outputWidth;
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            System.out.println("we can not load the model softmax layer by the path: " + path);
+            i.printStackTrace();
+            return;
+        } catch (ClassNotFoundException c) {
+            System.out.println("this class can transfer to softmax layer");
+            c.printStackTrace();
+            return;
+        }
+    }
 }

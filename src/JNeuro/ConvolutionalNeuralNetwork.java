@@ -22,6 +22,18 @@ public class ConvolutionalNeuralNetwork {
         return result;
     }
 
+    private void save(String path) {
+        for (int i = 0; i < this.layers.size(); i++) {
+            this.layers.get(i).save(path + "/layer" + i);
+        }
+    }
+
+    private void load(String path) {
+        for (int i = 0; i < this.layers.size(); i++) {
+            this.layers.get(i).load(path + "/layer" + i);
+        }
+    }
+
     public ConvolutionalNeuralNetwork() {
         this.layers.add(new ConvolutionLayer(16, 28, 28, 3));
         this.layers.add(new PoolingLayer()); // this result in 8*14*14
@@ -30,7 +42,7 @@ public class ConvolutionalNeuralNetwork {
         this.layers.add(new SoftMaxLayer(16, 14, 14, 1, 1, 10));// output layer
     }
 
-    public void train(int trainningSize, ImageDataFrame trainningData) throws IOException {
+    public void train(int trainningSize, ImageDataFrame trainningData, String path) throws IOException {
         int trueLabel = 0;
         double loss = 0;
         double accuracy = 0;
@@ -66,9 +78,11 @@ public class ConvolutionalNeuralNetwork {
             }
         }
         System.out.println("tranning average accuracy:- " + totalAccuracy / trainningSize * 100 + "%");
+        this.save(path);
     }
 
-    public void test(int testSize, ImageDataFrame testData) throws IOException {
+    public void test(int testSize, ImageDataFrame testData, String path) throws IOException {
+        this.load(path);
         int trueLabel = 0;
         double totalAccuracy = 0.0;
         for (int step = 1; step <= testSize; step++) {
