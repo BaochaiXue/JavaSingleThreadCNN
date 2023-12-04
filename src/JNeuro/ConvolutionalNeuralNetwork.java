@@ -23,11 +23,11 @@ public class ConvolutionalNeuralNetwork {
     }
 
     public ConvolutionalNeuralNetwork() {
-        this.layers.add(new ConvolutionLayer(8, 28, 28, 3));
+        this.layers.add(new ConvolutionLayer(16, 28, 28, 3));
         this.layers.add(new PoolingLayer()); // this result in 8*14*14
-        this.layers.add(new SoftMaxLayer(8, 14, 14, 8, 14, 14));// hidden layer
-        this.layers.add(new SoftMaxLayer(8, 14, 14, 8, 14, 14));// hidden layer 2
-        this.layers.add(new SoftMaxLayer(8, 14, 14, 1, 1, 10));// output layer
+        // this.layers.add(new SoftMaxLayer(8, 14, 14, 1, 14, 14));// hidden layer
+        // this.layers.add(new SoftMaxLayer(1, 14, 14, 1, 14, 14));// hidden layer 2
+        this.layers.add(new SoftMaxLayer(16, 14, 14, 1, 1, 10));// output layer
     }
 
     public void train(int trainningSize, ImageDataFrame trainningData) throws IOException {
@@ -35,7 +35,7 @@ public class ConvolutionalNeuralNetwork {
         double loss = 0;
         double accuracy = 0;
         double totalAccuracy = 0.0;
-        double learnRate = 0.005;
+        double learnRate = 0.001;
         double[][][] softmaxResult3D;
         double lastAccuracy = 0.0;
         for (int step = 1; step <= trainningSize; step++) {
@@ -53,10 +53,10 @@ public class ConvolutionalNeuralNetwork {
                 System.out
                         .print(" step: " + step + " loss: " + loss / 1000.0 + " accuracy: " + accuracy / 10.0 + "%");
                 if (lastAccuracy >= accuracy) {
-                    learnRate *= 0.9;
+                    learnRate *= 0.99;
                     System.out.println(" learn rate: " + learnRate);
                 } else {
-                    learnRate *= 1.05;
+                    learnRate *= 1.005;
                     System.out.println(" learn rate: " + learnRate);
                 }
                 loss = 0;
@@ -64,8 +64,6 @@ public class ConvolutionalNeuralNetwork {
                 lastAccuracy = accuracy;
                 accuracy = 0;
             }
-            System.out.println("step: " + step + " Average Accuracy: " + totalAccuracy / step * 100 + "%" + " loss: "
-                    + loss / step);
         }
         System.out.println("tranning average accuracy:- " + totalAccuracy / trainningSize * 100 + "%");
     }

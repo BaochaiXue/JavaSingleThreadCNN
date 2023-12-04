@@ -18,7 +18,7 @@ public class JNeuro {
     }
 
     public static void main(String[] args) throws IOException {
-        train(5000, "data/training");
+        train(300000, "data/training");
         test(100, "data/training");
     }
 
