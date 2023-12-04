@@ -31,7 +31,7 @@ public class SoftMaxLayer implements Layer {
     public double[][][] forward(double[][][] input) {
         double[][] readIn = MathUtil.flatten(input);
         this.output = new double[1][outputDepth * outputHeight * outputWidth];
-        output = MathUtil.matrixAdd(MathUtil.matrixHadamardProduct(readIn, weights), bias);
+        output = MathUtil.matrixAdd(MathUtil.matrixMutiplication(readIn, weights), bias);
         double[][] exp = MathUtil.exp(output);
         double inverseFactor = 1 / MathUtil.sum(exp);
         this.input = readIn;
@@ -56,8 +56,8 @@ public class SoftMaxLayer implements Layer {
             delta = MathUtil.scaling(outputMove, grad);
             double[][] deltaWeight = MathUtil.transpose(input);
             double[][] moveInput = weights;
-            double[][] moveWeight = MathUtil.matrixHadamardProduct(deltaWeight, delta);
-            deltaInput = MathUtil.matrixHadamardProduct(moveInput, MathUtil.transpose(delta));
+            double[][] moveWeight = MathUtil.matrixMutiplication(deltaWeight, delta);
+            deltaInput = MathUtil.matrixMutiplication(moveInput, MathUtil.transpose(delta));
             double[][] d_L_d_b = delta;
             weights = MathUtil.matrixAdd(MathUtil.scaling(moveWeight, -learning_rate), weights);
             bias = MathUtil.matrixAdd(MathUtil.scaling(d_L_d_b, -learning_rate), bias);

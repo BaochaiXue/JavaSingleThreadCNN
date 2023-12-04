@@ -22,7 +22,7 @@ public class ConvolutionLayer implements Layer {
             for (int j = 0; j < image[0].length; j++) {
                 var convolveField = MathUtil.submatrixAndFillZero(image, i - filter.length / 2, i + filter.length / 2,
                         j - filter[0].length / 2, j + filter[0].length / 2);
-                result[i][j] = MathUtil.sumOfHadamardProduct(convolveField, filter);
+                result[i][j] = MathUtil.sumOfMatrixProduct(convolveField, filter);
             }
         }
         return result;
@@ -48,8 +48,12 @@ public class ConvolutionLayer implements Layer {
                 for (int j = 0; j < this.sensingFields[0][0].length; j++) {
                     for (int k = 0; k < filters.length; k++) {
                         deltaFilters[k] = MathUtil.matrixAdd(deltaFilters[k],
-                                MathUtil.scaling(MathUtil.submatrixAndFillZero(back[s * filters.length + k], i,
-                                        i + filters[0].length, j, j + filters[0][0].length),
+                                MathUtil.scaling(
+                                        MathUtil.submatrixAndFillZero(back[s * filters.length + k],
+                                                i - filters[0].length / 2,
+                                                i + filters[0].length / 2,
+                                                j - filters[0][0].length / 2,
+                                                j + filters[0][0].length / 2),
                                         this.sensingFields[s][i][j]));
                     }
                 }
@@ -65,7 +69,7 @@ public class ConvolutionLayer implements Layer {
             for (int i = 0; i < sensingFields[0].length; i++) {
                 for (int j = 0; j < sensingFields[0][0].length; j++) {
                     for (int k = 0; k < filters.length; k++) {
-                        result[s][i][j] += MathUtil.sumOfHadamardProduct(
+                        result[s][i][j] += MathUtil.sumOfMatrixProduct(
                                 MathUtil.submatrixAndFillZero(back[s * filters.length + k], i - filters[0].length / 2,
                                         i + filters[0].length / 2, j - filters[0][0].length / 2,
                                         j + filters[0][0].length / 2),

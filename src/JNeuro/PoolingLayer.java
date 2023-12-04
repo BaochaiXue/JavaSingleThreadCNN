@@ -9,7 +9,7 @@ public class PoolingLayer implements Layer {
         double[][] pool = new double[img.length / 2][img[0].length / 2];
         for (int i = 0; i < pool.length - 1; i++) {
             for (int j = 0; j < pool[0].length - 1; j++) {
-                pool[i][j] = MathUtil.matrixMax(MathUtil.submatrix(img, i * 2, i * 2 + 1, j * 2, j * 2 + 1));
+                pool[i][j] = MathUtil.maxPooling(MathUtil.submatrix(img, i * 2, i * 2 + 1, j * 2, j * 2 + 1));
             }
         }
         return pool;

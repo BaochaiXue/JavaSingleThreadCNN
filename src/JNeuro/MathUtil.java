@@ -2,7 +2,14 @@ package JNeuro;
 
 public class MathUtil {
 
-    public static double[][] matrixHadamardProduct(final double[][] matrixA, final double[][] matrixB) {
+    public static double[][] matrixMutiplication(final double[][] matrixA, final double[][] matrixB) {
+        // check if the two matrix have the compatible size
+        if (matrixA[0].length != matrixB.length) {
+            throw new RuntimeException("the two matrix have incompatible size, the first matrix is " + matrixA.length
+                    + " * " + matrixA[0].length + " and the second matrix is " + matrixB.length + " * "
+                    + matrixB[0].length);
+        }
+
         double[][] result = new double[matrixA.length][matrixB[0].length];
         for (int i = 0; i < matrixA.length; i++) {
             for (int j = 0; j < matrixB[0].length; j++) {
@@ -14,11 +21,17 @@ public class MathUtil {
         return result;
     }
 
-    public static double[][] matrixAdd(final double[][] matrix1, final double[][] matrix2) {
-        double[][] result = new double[matrix1.length][matrix1[0].length];
-        for (int i = 0; i < matrix1.length; i++) {
-            for (int j = 0; j < matrix1[0].length; j++) {
-                result[i][j] = matrix1[i][j] + matrix2[i][j];
+    public static double[][] matrixAdd(final double[][] matrixA, final double[][] matrixB) {
+        // check if the two matrix have the same size
+        if (matrixA.length != matrixB.length || matrixA[0].length != matrixB[0].length) {
+            throw new RuntimeException("the two matrix have different size, the first matrix is " + matrixA.length
+                    + " * " + matrixA[0].length + " and the second matrix is " + matrixB.length + " * "
+                    + matrixB[0].length);
+        }
+        double[][] result = new double[matrixA.length][matrixA[0].length];
+        for (int i = 0; i < matrixA.length; i++) {
+            for (int j = 0; j < matrixA[0].length; j++) {
+                result[i][j] = matrixA[i][j] + matrixB[i][j];
             }
         }
         return result;
@@ -48,7 +61,7 @@ public class MathUtil {
         double[][] matrixScaling = new double[matrix.length][matrix[0].length];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
-                matrixScaling[i][j] = (double) matrix[i][j] * scale;
+                matrixScaling[i][j] = matrix[i][j] * scale;
             }
         }
         return matrixScaling;
@@ -84,21 +97,23 @@ public class MathUtil {
         return result;
     }
 
-    public static double[][] submatrix(double[][] matrix, int x1, int x2, int y1, int y2) {
+    public static double[][] submatrix(final double[][] matrix, final int x1, final int x2, final int y1,
+            final int y2) {
         // check if the submatrix is valid
         if (x1 < 0 || x2 >= matrix.length || y1 < 0 || y2 >= matrix[0].length) {
             throw new RuntimeException("the submatrix is invalid");
         }
-        double[][] sub = new double[x2 - x1 + 1][y2 - y1 + 1];
-        for (int i = 0; i < sub.length; i++) {
-            for (int j = 0; j < sub[0].length; j++) {
-                sub[i][j] = matrix[x1 + i][y1 + j];
+        double[][] region = new double[x2 - x1 + 1][y2 - y1 + 1];
+        for (int i = 0; i < region.length; i++) {
+            for (int j = 0; j < region[0].length; j++) {
+                region[i][j] = matrix[x1 + i][y1 + j];
             }
         }
-        return sub;
+        return region;
     }
 
-    public static double[][] submatrixAndFillZero(double[][] matrix, int x1, int x2, int y1, int y2) {
+    public static double[][] submatrixAndFillZero(final double[][] matrix, final int x1, final int x2, final int y1,
+            final int y2) {
         double[][] sub = new double[x2 - x1 + 1][y2 - y1 + 1];
         for (int i = 0; i < sub.length; i++) {
             for (int j = 0; j < sub[0].length; j++) {
@@ -112,95 +127,55 @@ public class MathUtil {
         return sub;
     }
 
-    public static double sumOfHadamardProduct(double[][] mat1, double[][] mat2) {
+    public static double sumOfMatrixProduct(final double[][] matrixA, final double[][] matrixB) {
         double sum = 0;
-        for (int i = 0; i < mat1.length; i++) {
-            for (int j = 0; j < mat2[0].length; j++) {
-                sum += mat1[i][j] * mat2[i][j];
+        for (int i = 0; i < matrixA.length; i++) {
+            for (int j = 0; j < matrixB[0].length; j++) {
+                sum += matrixA[i][j] * matrixB[i][j];
             }
         }
         return sum;
     }
 
-    public static double matrixMax(double[][] mat) {
-        double max = mat[0][0];
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[0].length; j++) {
-                max = max < mat[i][j] ? mat[i][j] : max;
+    public static double maxPooling(final double[][] matrix) {
+        double max = matrix[0][0];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                max = max < matrix[i][j] ? matrix[i][j] : max;
             }
         }
         return max;
     }
 
-    public static double vectorMax(double[][] vec) {
-        double max = vec[0][0];
-        for (int i = 0; i < vec[0].length; i++) {
-            max = max < vec[0][i] ? vec[0][i] : max;
-        }
-        return max;
-    }
-
-    public static int argmax(double[][] vec) {
+    public static int argmax(final double[][] vector) {
         int arg = 0;
-        for (int i = 0; i < vec[0].length; i++) {
-            arg = vec[0][arg] < vec[0][i] ? i : arg;
+        for (int i = 0; i < vector[0].length; i++) {
+            arg = vector[0][arg] < vector[0][i] ? i : arg;
         }
         return arg;
     }
 
-    public static double[] shape(double[][] mat) {
-        return new double[] { mat.length, mat[0].length };
-    }
-
-    public static double[][] flattern(double[][] mat) {
-        double[][] v = new double[1][mat.length * mat[0].length];
-        int k = 0; // vector iterator
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[0].length; j++) {
-                v[0][k] = mat[i][j];
-                k++;
-            }
-        }
-        return v;
-    }
-
-    public static double[][] flatten(double[][][] mat) {
-        double[][] v = new double[1][mat.length * mat[0].length * mat[0][0].length];
+    public static double[][] flatten(final double[][][] matrix) {
+        double[][] vector = new double[1][matrix.length * matrix[0].length * matrix[0][0].length];
         int pos = 0;
-        for (int i = 0; i < mat.length; i++) {
-            for (int j = 0; j < mat[0].length; j++) {
-                for (int k = 0; k < mat[0][0].length; k++) {
-                    v[0][pos] = mat[i][j][k];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                for (int k = 0; k < matrix[0][0].length; k++) {
+                    vector[0][pos] = matrix[i][j][k];
                     pos++;
                 }
             }
         }
-        return v;
+        return vector;
     }
 
-    public static double[][] argumentRowVector(double[] input) {
-        double[][] result = new double[1][input.length];
-        for (int i = 0; i < input.length; i++) {
-            result[0][i] = input[i];
-        }
-        return result;
-    }
-
-    public static double[][] argumentColumnVector(double[] input) {
-        double[][] result = new double[input.length][1];
-        for (int i = 0; i < input.length; i++) {
-            result[i][0] = input[i];
-        }
-        return result;
-    }
-
-    public static double[][][] reshape(double[][] input, int d, int h, int w) {
-        double[][][] output = new double[d][h][w];
+    public static double[][][] reshape(final double[][] vector, final int depth, final int height, final int weight) {
+        double[][][] output = new double[depth][height][weight];
         int input_index = 0;
-        for (int i = 0; i < d; i++) {
-            for (int j = 0; j < h; j++) {
-                for (int k = 0; k < w; k++) {
-                    output[i][j][k] = input[0][input_index];
+        for (int i = 0; i < depth; i++) {
+            for (int j = 0; j < height; j++) {
+                for (int k = 0; k < weight; k++) {
+                    output[i][j][k] = vector[0][input_index];
                     input_index++;
                 }
             }
@@ -208,18 +183,18 @@ public class MathUtil {
         return output;
     }
 
-    public static double[][] flip(double[][] mat) {
-        double[][] result = new double[mat.length][mat[0].length];
-        for (int i = 0; i < mat.length; i++) {
-            result[mat.length - 1 - i] = reverse(mat[i]);
+    public static double[][] flip(final double[][] matrix) {
+        double[][] result = new double[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            result[matrix.length - 1 - i] = reverse(matrix[i]);
         }
         return result;
     }
 
-    private static double[] reverse(double[] ds) {
-        double[] result = new double[ds.length];
-        for (int i = 0; i < ds.length; i++) {
-            result[i] = ds[ds.length - 1 - i];
+    private static double[] reverse(final double[] matrix) {
+        double[] result = new double[matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            result[i] = matrix[matrix.length - 1 - i];
         }
         return result;
     }
