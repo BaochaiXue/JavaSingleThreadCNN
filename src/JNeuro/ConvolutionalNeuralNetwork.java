@@ -78,7 +78,8 @@ public class ConvolutionalNeuralNetwork {
                 accuracy = 0;
             }
         }
-        System.out.println("tranning average accuracy:- " + totalAccuracy / trainningSize * 100 + "%");
+        System.out.println("tranning average accuracy: " + totalAccuracy / trainningSize * 100 + "%"
+                + " trainning size: " + trainningSize);
         this.save(this.weightPath);
         isStartNewly = false;
         System.out.println("training finished");
@@ -96,7 +97,8 @@ public class ConvolutionalNeuralNetwork {
             double[][] softmaxResult = MathUtil.flatten(softmaxResult3D);
             totalAccuracy += correct_label == MathUtil.argmax(softmaxResult) ? 1 : 0;
         }
-        System.out.println("test average accuracy:- " + totalAccuracy / testSize * 100 + "%");
+        System.out
+                .println("test average accuracy: " + totalAccuracy / testSize * 100 + "%" + " test size: " + testSize);
         System.out.println("testing finished");
     }
 }

@@ -90,6 +90,11 @@ public class ImageDataFrame {
                 System.out.println(e.getMessage());
             }
         }
+        // randomly give the index a start value
+        Random rand = new Random();
+        for (int i = 0; i < 10; i++) {
+            this.index.put(i, rand.nextInt(this.data.get(i).size()));
+        }
     }
 
     public double[][][] sampledFromLabel(int label) throws RuntimeException {

@@ -65,9 +65,9 @@ public class SoftMaxLayer implements Layer, java.io.Serializable {
             double[][] moveInput = weights;
             double[][] moveWeight = MathUtil.matrixMutiplication(deltaWeight, delta);
             deltaInput = MathUtil.matrixMutiplication(moveInput, MathUtil.transpose(delta));
-            double[][] d_L_d_b = delta;
+            double[][] deltaLoss = delta;
             weights = MathUtil.matrixAdd(MathUtil.scaling(moveWeight, -learning_rate), weights);
-            bias = MathUtil.matrixAdd(MathUtil.scaling(d_L_d_b, -learning_rate), bias);
+            bias = MathUtil.matrixAdd(MathUtil.scaling(deltaLoss, -learning_rate), bias);
         }
         return MathUtil.reshape(MathUtil.transpose(deltaInput), depth, height, width);
     }

@@ -19,7 +19,7 @@ public class JNeuro {
 
     public static void main(String[] args) throws IOException {
         train(300000, "data/training", "weight");
-        test(100, "data/training", "weight");
+        test(1000, "data/training", "weight");
     }
 
 }
