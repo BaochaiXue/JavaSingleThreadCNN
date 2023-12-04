@@ -125,4 +125,18 @@ public class ImageDataFrame {
         this.index.put(label, (index + 1) % this.data.get(label).size());
         return this.data.get(label).get(index).getImage();
     }
+
+    public static double[][][] loadAndSliceEightDigitsImage(String path) throws IOException {
+        BufferedImage image = imageRead(path);
+        BufferedImage scaledImage = new BufferedImage(224, 28, BufferedImage.TYPE_INT_RGB);
+        scaledImage.getGraphics().drawImage(image, 0, 0, 224, 28, null); // scale the image
+        double[][][] digitized = digitize(scaledImage);
+        double[][][] result = new double[8][28][28];
+        for (int i = 0; i < 28; i++) {
+            for (int j = 0; j < 224; j++) {
+                result[j / 28][i][j % 28] = digitized[0][i][j];
+            }
+        }
+        return result;
+    }
 }

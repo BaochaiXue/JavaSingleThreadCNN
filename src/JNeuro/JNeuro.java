@@ -23,4 +23,21 @@ public class JNeuro {
         test(1000, "data/training", "weight");
     }
 
+    public static String recoginizeImage(String pathOfTheImage, String pathOfTheWeight) throws IOException {
+        ConvolutionalNeuralNetwork cnn = new ConvolutionalNeuralNetwork(false, pathOfTheWeight);
+        double[][][] image = ImageDataFrame.loadAndSliceEightDigitsImage(pathOfTheImage);
+        String resultString = "";
+        for (int i = 0; i < 8; i++) {
+            double[][][] digit = new double[1][28][28];
+            for (int j = 0; j < 28; j++) {
+                for (int k = 0; k < 28; k++) {
+                    digit[0][j][k] = image[i][j][k];
+                }
+            }
+            int result = cnn.predict(digit);
+            resultString += result;
+        }
+        return resultString;
+    }
+
 }

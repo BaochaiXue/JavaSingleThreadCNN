@@ -106,4 +106,10 @@ public class ConvolutionalNeuralNetwork {
                 .println("test average accuracy: " + totalAccuracy / testSize * 100 + "%" + " test size: " + testSize);
         System.out.println("testing finished");
     }
+
+    public int predict(double[][][] pixels) {
+        double[][][] softmaxResult3D = this.forward(pixels);
+        double[][] softmaxResult = MathUtil.flatten(softmaxResult3D);
+        return MathUtil.argmax(softmaxResult);
+    }
 }
