@@ -28,7 +28,7 @@ public class ConvolutionLayer implements Layer, java.io.Serializable {
             for (int j = 0; j < image[0].length; j++) {
                 var convolveField = MathUtil.submatrixAndFillZero(image, i - filter.length / 2, i + filter.length / 2,
                         j - filter[0].length / 2, j + filter[0].length / 2);
-                result[i][j] = MathUtil.sumOfMatrixProduct(convolveField, filter);
+                result[i][j] = MathUtil.sumOfHadamardProduct(convolveField, filter);
             }
         }
         return result;
@@ -75,7 +75,7 @@ public class ConvolutionLayer implements Layer, java.io.Serializable {
             for (int i = 0; i < sensingFields[0].length; i++) {
                 for (int j = 0; j < sensingFields[0][0].length; j++) {
                     for (int k = 0; k < filters.length; k++) {
-                        result[s][i][j] += MathUtil.sumOfMatrixProduct(
+                        result[s][i][j] += MathUtil.sumOfHadamardProduct(
                                 MathUtil.submatrixAndFillZero(back[s * filters.length + k], i - filters[0].length / 2,
                                         i + filters[0].length / 2, j - filters[0][0].length / 2,
                                         j + filters[0][0].length / 2),

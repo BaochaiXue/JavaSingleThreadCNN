@@ -164,13 +164,18 @@ public class MathUtil {
         return sub;
     }
 
-    public static double sumOfMatrixProduct(final double[][] matrixA, final double[][] matrixB) {
+    public static double sumOfHadamardProduct(final double[][] matrixA, final double[][] matrixB) {
         if (matrixA == null || matrixB == null) {
             throw new RuntimeException("the matrix is null");
         }
+        if (matrixA.length != matrixB.length || matrixA[0].length != matrixB[0].length) {
+            throw new RuntimeException("the two matrix have different size, the first matrix is " + matrixA.length
+                    + " * " + matrixA[0].length + " and the second matrix is " + matrixB.length + " * "
+                    + matrixB[0].length);
+        }
         double sum = 0;
         for (int i = 0; i < matrixA.length; i++) {
-            for (int j = 0; j < matrixB[0].length; j++) {
+            for (int j = 0; j < matrixA[0].length; j++) {
                 sum += matrixA[i][j] * matrixB[i][j];
             }
         }

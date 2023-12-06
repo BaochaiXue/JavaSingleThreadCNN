@@ -688,28 +688,28 @@ public class TestMahtUtil {
     }
 
     @Test
-    public void testSumOfMatrixProduct() {
-        double[][] matrixA = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
-        double[][] matrixB = new double[][] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
-        double result = JNeuro.MathUtil.sumOfMatrixProduct(matrixA, matrixB);
-        double expected = 37;
+    public void testSumOfHadamardProduct() {
+        double[][] matrixA = new double[][] { { 1, 2 }, { 4, 5 } };
+        double[][] matrixB = new double[][] { { 1, 2 }, { 3, 4 } };
+        double result = JNeuro.MathUtil.sumOfHadamardProduct(matrixA, matrixB);
+        double expected = 1 + 4 + 12 + 20;
         assert (Math.abs(result - expected) < 1e-10);
     }
 
     @Test
-    public void testSumOfMatrixProduct2() {
+    public void testSumOfHadamardProduct2() {
         double[][] matrixA = null;
         double[][] matrixB = null;
         // try to catch the exception
         try {
-            JNeuro.MathUtil.sumOfMatrixProduct(matrixA, matrixB);
+            JNeuro.MathUtil.sumOfHadamardProduct(matrixA, matrixB);
         } catch (RuntimeException e) {
             assertEquals("the matrix is null", e.getMessage());
         }
     }
 
     @Test
-    public void testSumOfMatrixProduct3() {
+    public void testSumOfHadamardProduct3() {
         // we enumerate all the possible cases of if the matrix is null
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
@@ -717,7 +717,7 @@ public class TestMahtUtil {
                 double[][] matrixB = new double[][] { { 1, 2, 3 } };
                 // try to catch the exception
                 try {
-                    JNeuro.MathUtil.sumOfMatrixProduct(matrixA, matrixB);
+                    JNeuro.MathUtil.sumOfHadamardProduct(matrixA, matrixB);
                 } catch (RuntimeException e) {
                     assertEquals("the matrix is null", e.getMessage());
                 }
@@ -726,7 +726,7 @@ public class TestMahtUtil {
                 double[][] matrixB = null;
                 // try to catch the exception
                 try {
-                    JNeuro.MathUtil.sumOfMatrixProduct(matrixA, matrixB);
+                    JNeuro.MathUtil.sumOfHadamardProduct(matrixA, matrixB);
                 } catch (RuntimeException e) {
                     assertEquals("the matrix is null", e.getMessage());
                 }
@@ -735,12 +735,44 @@ public class TestMahtUtil {
                 double[][] matrixB = null;
                 // try to catch the exception
                 try {
-                    JNeuro.MathUtil.sumOfMatrixProduct(matrixA, matrixB);
+                    JNeuro.MathUtil.sumOfHadamardProduct(matrixA, matrixB);
                 } catch (RuntimeException e) {
                     assertEquals("the matrix is null", e.getMessage());
                 }
             }
         }
+    }
+
+    @Test
+    public void testSumOfHadamardProduct4() {
+        double[][] matrixA = new double[][] { { 1, 2, 3 } };
+        double[][] matrixB = new double[][] { { 2, 3, 4 } };
+        double result = JNeuro.MathUtil.sumOfHadamardProduct(matrixA, matrixB);
+        double expected = 2 + 6 + 12;
+        assertEquals(result, expected, 1e-10);
+    }
+
+    @Test
+    public void testSumOfHadamardProduct5() {
+        // try to catch exception of if (matrixA.length != matrixB.length ||
+        // matrixA[0].length != matrixB[0].length)
+        try {
+            double[][] matrixA = new double[][] { { 1, 2, 3 } };
+            double[][] matrixB = new double[][] { { 1, 2 } };
+            JNeuro.MathUtil.sumOfHadamardProduct(matrixA, matrixB);
+        } catch (RuntimeException e) {
+            assert (e.getMessage().equals(
+                    "the two matrix have different size, the first matrix is 1 * 3 and the second matrix is 1 * 2"));
+        }
+        try {
+            double[][] matrixA = new double[][] { { 1, 2, 3 } };
+            double[][] matrixB = new double[][] { { 1, 2, 3 }, { 1, 2, 3 } };
+            JNeuro.MathUtil.sumOfHadamardProduct(matrixA, matrixB);
+        } catch (RuntimeException e) {
+            assert (e.getMessage().equals(
+                    "the two matrix have different size, the first matrix is 1 * 3 and the second matrix is 2 * 3"));
+        }
+
     }
 
     @Test
