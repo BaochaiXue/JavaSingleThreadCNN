@@ -3,6 +3,11 @@ package JNeuro;
 public class MathUtil {
 
     public static double[][] matrixMutiplication(final double[][] matrixA, final double[][] matrixB) {
+        // check if the two matrix is null
+        if (matrixA == null || matrixB == null) {
+            throw new RuntimeException("the two matrix is null");
+        }
+
         // check if the two matrix have the compatible size
         if (matrixA[0].length != matrixB.length) {
             throw new RuntimeException("the two matrix have incompatible size, the first matrix is " + matrixA.length
@@ -22,6 +27,11 @@ public class MathUtil {
     }
 
     public static double[][] matrixAdd(final double[][] matrixA, final double[][] matrixB) {
+        // check if the two matrix is null
+        if (matrixA == null || matrixB == null) {
+            throw new RuntimeException("the two matrix is null");
+        }
+
         // check if the two matrix have the same size
         if (matrixA.length != matrixB.length || matrixA[0].length != matrixB[0].length) {
             throw new RuntimeException("the two matrix have different size, the first matrix is " + matrixA.length
@@ -48,6 +58,10 @@ public class MathUtil {
     }
 
     public static double[][] exp(final double[][] matrix) {
+        // check if the matrix is null
+        if (matrix == null) {
+            throw new RuntimeException("the matrix is null");
+        }
         double[][] expMatrix = new double[matrix.length][matrix[0].length];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
@@ -58,6 +72,10 @@ public class MathUtil {
     }
 
     public static double[][] scaling(final double[][] matrix, final double scale) {
+        // check if the matrix is null
+        if (matrix == null) {
+            throw new RuntimeException("the matrix is null");
+        }
         double[][] matrixScaling = new double[matrix.length][matrix[0].length];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
@@ -68,6 +86,9 @@ public class MathUtil {
     }
 
     public static double sum(final double[][] matrix) {
+        if (matrix == null) {
+            throw new RuntimeException("the matrix is null");
+        }
         double sum = 0;
         for (double[] row : matrix) {
             for (double element : row) {
@@ -78,6 +99,10 @@ public class MathUtil {
     }
 
     public static double[][] transpose(final double[][] matrix) {
+        // check if the matrix is null
+        if (matrix == null) {
+            throw new RuntimeException("the matrix is null");
+        }
         double[][] transpose = new double[matrix[0].length][matrix.length];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
@@ -99,10 +124,18 @@ public class MathUtil {
 
     public static double[][] submatrix(final double[][] matrix, final int x1, final int x2, final int y1,
             final int y2) {
+        // check if the matrix is null
+        if (matrix == null) {
+            throw new RuntimeException("the matrix is null");
+        }
         // check if the submatrix is valid
         if (x1 < 0 || x2 >= matrix.length || y1 < 0 || y2 >= matrix[0].length) {
-            throw new RuntimeException("the submatrix is invalid");
+            throw new RuntimeException("the submatrix is out of bound");
         }
+        if (x1 > x2 || y1 > y2) {
+            throw new RuntimeException("the submatrix is out of bound");
+        }
+
         double[][] region = new double[x2 - x1 + 1][y2 - y1 + 1];
         for (int i = 0; i < region.length; i++) {
             for (int j = 0; j < region[0].length; j++) {
@@ -114,6 +147,10 @@ public class MathUtil {
 
     public static double[][] submatrixAndFillZero(final double[][] matrix, final int x1, final int x2, final int y1,
             final int y2) {
+        // check if the matrix is null
+        if (matrix == null) {
+            throw new RuntimeException("the matrix is null");
+        }
         double[][] sub = new double[x2 - x1 + 1][y2 - y1 + 1];
         for (int i = 0; i < sub.length; i++) {
             for (int j = 0; j < sub[0].length; j++) {
@@ -128,6 +165,9 @@ public class MathUtil {
     }
 
     public static double sumOfMatrixProduct(final double[][] matrixA, final double[][] matrixB) {
+        if (matrixA == null || matrixB == null) {
+            throw new RuntimeException("the matrix is null");
+        }
         double sum = 0;
         for (int i = 0; i < matrixA.length; i++) {
             for (int j = 0; j < matrixB[0].length; j++) {
@@ -138,6 +178,9 @@ public class MathUtil {
     }
 
     public static double maxPooling(final double[][] matrix) {
+        if (matrix == null) {
+            throw new RuntimeException("the matrix is null");
+        }
         double max = matrix[0][0];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
