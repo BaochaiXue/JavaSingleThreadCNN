@@ -6,6 +6,8 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
 import org.junit.experimental.theories.ParametersSuppliedBy;
 
+import JNeuro.MathUtil;
+
 public class TestMahtUtil {
     @Test
     public void testMatrixMutiplication1() {
@@ -104,6 +106,49 @@ public class TestMahtUtil {
     }
 
     @Test
+    public void testMatrixMutiplication8() {
+        // we enumerate all the possible cases of if the matrix is null
+        for (int i = 0; i < 4; i++) {
+            if (i == 0) {
+                double[][] matrixA = null;
+                double[][] matrixB = new double[][] { { 1, 2, 3 } };
+                // try to catch the exception
+                try {
+                    JNeuro.MathUtil.matrixMutiplication(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertEquals("the two matrix is null", e.getMessage());
+                }
+            } else if (i == 1) {
+                double[][] matrixA = new double[][] { { 1, 2, 3 } };
+                double[][] matrixB = null;
+                // try to catch the exception
+                try {
+                    JNeuro.MathUtil.matrixMutiplication(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertEquals("the two matrix is null", e.getMessage());
+                }
+            } else if (i == 2) {
+                double[][] matrixA = null;
+                double[][] matrixB = null;
+                // try to catch the exception
+                try {
+                    JNeuro.MathUtil.matrixMutiplication(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertEquals("the two matrix is null", e.getMessage());
+                }
+            } else {
+                double[][] matrixA = new double[][] { { 1, 2, 3 } };
+                double[][] matrixB = new double[][] { { 1, 2, 3 } };
+                try {
+                    JNeuro.MathUtil.matrixMutiplication(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertNotEquals("the two matrix is null", e.getMessage());
+                }
+            }
+        }
+    }
+
+    @Test
     public void testMatrixAdd1() {
         double[][] matrixA = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
         double[][] matrixB = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
@@ -152,6 +197,56 @@ public class TestMahtUtil {
             JNeuro.MathUtil.matrixAdd(matrixA, matrixB);
         } catch (RuntimeException e) {
             assertEquals("the two matrix is null", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testMatrixAdd5() {
+        // we enumerate all the possible cases of if the matrix is null
+        for (int i = 0; i < 4; i++) {
+            if (i == 0) {
+                double[][] matrixA = null;
+                double[][] matrixB = new double[][] { { 1, 2, 3 } };
+                // try to catch the exception
+                try {
+                    JNeuro.MathUtil.matrixAdd(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertEquals("the two matrix is null", e.getMessage());
+                }
+            } else if (i == 1) {
+                double[][] matrixA = new double[][] { { 1, 2, 3 } };
+                double[][] matrixB = null;
+                // try to catch the exception
+                try {
+                    JNeuro.MathUtil.matrixAdd(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertEquals("the two matrix is null", e.getMessage());
+                }
+            } else if (i == 2) {
+                double[][] matrixA = null;
+                double[][] matrixB = null;
+                // try to catch the exception
+                try {
+                    JNeuro.MathUtil.matrixAdd(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertEquals("the two matrix is null", e.getMessage());
+                }
+            } else {
+                double[][] matrixA = new double[][] { { 1, 2, 3 } };
+                double[][] matrixB = new double[][] { { 1, 2, 3, 4 } };
+                try {
+                    JNeuro.MathUtil.matrixAdd(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertNotEquals("the two matrix is null", e.getMessage());
+                }
+                matrixA = new double[][] { { 1, 2 }, { 3, 4 } };
+                matrixB = new double[][] { { 1, 2 } };
+                try {
+                    JNeuro.MathUtil.matrixAdd(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertNotEquals("the two matrix is null", e.getMessage());
+                }
+            }
         }
     }
 
@@ -363,6 +458,45 @@ public class TestMahtUtil {
     }
 
     @Test
+    public void testSubmatrix8() {
+        // test branches of if (x1 < 0 || x2 >= matrix.length || y1 < 0 || y2 >=
+        // matrix[0].length)
+        double[][] matrix = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
+        for (int x1 = -1; x1 < 2; x1++) {
+            for (int x2 = 1; x2 < 4; x2++) {
+                for (int y1 = -1; y1 < 2; y1++) {
+                    for (int y2 = 1; y2 < 4; y2++) {
+                        if (x1 < 0 || x2 >= matrix.length || y1 < 0 || y2 >= matrix[0].length) {
+                            try {
+                                JNeuro.MathUtil.submatrix(matrix, x1, x2, y1, y2);
+                            } catch (RuntimeException e) {
+                                assert (e.getMessage().equals("the submatrix is out of bound"));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // test branches of if (x1 > x2 || y1 > y2)
+        for (int x1 = 0; x1 < 2; x1++) {
+            for (int x2 = 0; x2 < 2; x2++) {
+                for (int y1 = 0; y1 < 2; y1++) {
+                    for (int y2 = 0; y2 < 2; y2++) {
+                        if (x1 > x2 || y1 > y2) {
+                            try {
+                                JNeuro.MathUtil.submatrix(matrix, x1, x2, y1, y2);
+                            } catch (RuntimeException e) {
+                                assert (e.getMessage().equals("the submatrix is out of bound"));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    @Test
     public void testSubmatrixAndFillZero() {
         double[][] matrix = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
         double[][] result = JNeuro.MathUtil.submatrixAndFillZero(matrix, 0, 0, 1, 1);
@@ -454,6 +588,106 @@ public class TestMahtUtil {
     }
 
     @Test
+    public void testSubmatrixAndFillZero7() {
+        double[][] matrix = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
+        double[][] result = JNeuro.MathUtil.submatrixAndFillZero(matrix, -1, 1, 1, 4);
+        double[][] expected = new double[][] { { 0, 0, 0, 0 }, { 2, 3, 0, 0 }, { 5, 6, 0, 0 } };
+        assert (result.length == expected.length);
+        assert (result[0].length == expected[0].length);
+        for (int i = 0; i < result.length; i++) {
+            assert (result[i].length == expected[i].length);
+            for (int j = 0; j < result[i].length; j++) {
+                // test if the double is close enough
+                assert (Math.abs(result[i][j] - expected[i][j]) < 1e-10);
+            }
+        }
+    }
+
+    @Test
+    public void testSubmatrixAndFillZero8() {
+        double[][] matrix = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
+        double[][] result = JNeuro.MathUtil.submatrixAndFillZero(matrix, 9, 9, 11, 11);
+        double[][] expected = new double[][] { { 0 } };
+        assert (result.length == expected.length);
+        assert (result[0].length == expected[0].length);
+        for (int i = 0; i < result.length; i++) {
+            assert (result[i].length == expected[i].length);
+            for (int j = 0; j < result[i].length; j++) {
+                // test if the double is close enough
+                assert (Math.abs(result[i][j] - expected[i][j]) < 1e-10);
+            }
+        }
+    }
+
+    @Test
+    public void testSubmatrixAndFillZero9() {
+        double[][] matrix = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
+        double[][] result = JNeuro.MathUtil.submatrixAndFillZero(matrix, 9, 9, -1, -1);
+        double[][] expected = new double[][] { { 0 } };
+        assert (result.length == expected.length);
+        assert (result[0].length == expected[0].length);
+        for (int i = 0; i < result.length; i++) {
+            assert (result[i].length == expected[i].length);
+            for (int j = 0; j < result[i].length; j++) {
+                // test if the double is close enough
+                assert (Math.abs(result[i][j] - expected[i][j]) < 1e-10);
+            }
+        }
+    }
+
+    @Test
+    public void testSubmatrixAndFillZero10() {
+        double[][] matrix = {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+        };
+        double[][] expected = {
+                { 6, 0 },
+                { 9, 0 }
+        };
+        double[][] result = JNeuro.MathUtil.submatrixAndFillZero(matrix, 1, 2, 2, 3);
+        assert (result.length == expected.length);
+        assert (result[0].length == expected[0].length);
+        assert (result[1].length == expected[1].length);
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(result[i].length, expected[i].length);
+        }
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(result[i].length, expected[i].length);
+            for (int j = 0; j < result[i].length; j++) {
+                assertEquals(result[i][j], expected[i][j], 1e-10);
+            }
+        }
+    }
+
+    @Test
+    public void testSubmatrixAndFillZero11() {
+        double[][] matrix = {
+                { 1, 2, 3 },
+                { 4, 5, 6 },
+                { 7, 8, 9 }
+        };
+        double[][] expected = {
+                { 0, 0 },
+                { 0, 1 }
+        };
+        double[][] result = JNeuro.MathUtil.submatrixAndFillZero(matrix, -1, 0, -1, 0);
+        assert (result.length == expected.length);
+        assert (result[0].length == expected[0].length);
+        assert (result[1].length == expected[1].length);
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(result[i].length, expected[i].length);
+        }
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(result[i].length, expected[i].length);
+            for (int j = 0; j < result[i].length; j++) {
+                assertEquals(result[i][j], expected[i][j], 1e-10);
+            }
+        }
+    }
+
+    @Test
     public void testSumOfMatrixProduct() {
         double[][] matrixA = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
         double[][] matrixB = new double[][] { { 1, 2 }, { 3, 4 }, { 5, 6 } };
@@ -471,6 +705,41 @@ public class TestMahtUtil {
             JNeuro.MathUtil.sumOfMatrixProduct(matrixA, matrixB);
         } catch (RuntimeException e) {
             assertEquals("the matrix is null", e.getMessage());
+        }
+    }
+
+    @Test
+    public void testSumOfMatrixProduct3() {
+        // we enumerate all the possible cases of if the matrix is null
+        for (int i = 0; i < 3; i++) {
+            if (i == 0) {
+                double[][] matrixA = null;
+                double[][] matrixB = new double[][] { { 1, 2, 3 } };
+                // try to catch the exception
+                try {
+                    JNeuro.MathUtil.sumOfMatrixProduct(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertEquals("the matrix is null", e.getMessage());
+                }
+            } else if (i == 1) {
+                double[][] matrixA = new double[][] { { 1, 2, 3 } };
+                double[][] matrixB = null;
+                // try to catch the exception
+                try {
+                    JNeuro.MathUtil.sumOfMatrixProduct(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertEquals("the matrix is null", e.getMessage());
+                }
+            } else if (i == 2) {
+                double[][] matrixA = null;
+                double[][] matrixB = null;
+                // try to catch the exception
+                try {
+                    JNeuro.MathUtil.sumOfMatrixProduct(matrixA, matrixB);
+                } catch (RuntimeException e) {
+                    assertEquals("the matrix is null", e.getMessage());
+                }
+            }
         }
     }
 
@@ -523,5 +792,58 @@ public class TestMahtUtil {
         int result = JNeuro.MathUtil.argmax(rowVector);
         int expected = 0;
         assertEquals(expected, result);
+    }
+
+    @Test
+    public void testFlatten() {
+        double[][][] matrix = new double[][][] { { { 1, 2, 3 }, { 4, 5, 6 } } };
+        double[][] result = JNeuro.MathUtil.flatten(matrix);
+        double[][] expected = new double[][] { { 1, 2, 3, 4, 5, 6 } };
+        assert (result.length == expected.length);
+        assert (result[0].length == expected[0].length);
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(result[i].length, expected[i].length);
+        }
+    }
+
+    @Test
+    public void testReshape() {
+        double[][] matrix = new double[][] { { 1, 2, 3, 4, 5, 6 } };
+        double[][][] result = JNeuro.MathUtil.reshape(matrix, 1, 2, 3);
+        double[][][] expected = new double[][][] { { { 1, 2, 3 }, { 4, 5, 6 } } };
+        assert (result.length == expected.length);
+        assert (result[0].length == expected[0].length);
+        assert (result[0][0].length == expected[0][0].length);
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(result[i].length, expected[i].length);
+        }
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(result[i].length, expected[i].length);
+            for (int j = 0; j < result[i].length; j++) {
+                assertEquals(result[i][j].length, expected[i][j].length);
+            }
+        }
+    }
+
+    @Test
+    public void testFlip() {
+        MathUtil mathUtil = new MathUtil();
+        assertNotEquals(mathUtil, null);
+        double[][] matrix = new double[][] { { 1, 2, 3 }, { 4, 5, 6 } };
+        double[][] result = JNeuro.MathUtil.flip(matrix);
+        double[][] expected = new double[][] { { 6, 5, 4 }, { 3, 2, 1 } };
+        assert (result.length == expected.length);
+        assert (result[0].length == expected[0].length);
+        assert (result[1].length == expected[1].length);
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(result[i].length, expected[i].length);
+        }
+        for (int i = 0; i < result.length; i++) {
+            assertEquals(result[i].length, expected[i].length);
+            for (int j = 0; j < result[i].length; j++) {
+                assertEquals(result[i][j], expected[i][j], 1e-10);
+            }
+        }
+
     }
 }

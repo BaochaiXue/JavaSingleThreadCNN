@@ -13,8 +13,8 @@ public class PoolingLayer implements Layer, java.io.Serializable {
 
     private double[][] pooling(double[][] img) {
         double[][] pool = new double[img.length / 2][img[0].length / 2];
-        for (int i = 0; i < pool.length - 1; i++) {
-            for (int j = 0; j < pool[0].length - 1; j++) {
+        for (int i = 0; i < pool.length; i++) {
+            for (int j = 0; j < pool[0].length; j++) {
                 pool[i][j] = MathUtil.maxPooling(MathUtil.submatrix(img, i * 2, i * 2 + 1, j * 2, j * 2 + 1));
             }
         }
@@ -22,12 +22,11 @@ public class PoolingLayer implements Layer, java.io.Serializable {
     }
 
     @Override
-    public double[][][] forward(double[][][] dta) {
-        input = dta;
-        double[][][] result = new double[dta.length][dta[0].length][dta[0][0].length];
-        for (int k = 0; k < dta.length; k++) {
-            double[][] res = pooling(dta[k]);
-            result[k] = res;
+    public double[][][] forward(double[][][] dataInput) {
+        input = dataInput;
+        double[][][] result = new double[dataInput.length][dataInput[0].length / 2][dataInput[0][0].length / 2];
+        for (int k = 0; k < dataInput.length; k++) {
+            result[k] = pooling(dataInput[k]);
         }
         output = result;
         return result;
