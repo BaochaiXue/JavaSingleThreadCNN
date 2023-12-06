@@ -182,4 +182,20 @@ public class TestPoolingLayer {
         assertEquals(emptyLayer, loadLayer);
     }
 
+    @Test
+    public void testLoad3() {
+        String pathDoNotExist = "model/testPoolingLayer";
+        JNeuro.PoolingLayer loadLayer = new JNeuro.PoolingLayer();
+        loadLayer.load(pathDoNotExist);
+        JNeuro.PoolingLayer emptyLayer = new JNeuro.PoolingLayer();
+        assertEquals(emptyLayer, loadLayer);
+    }
+
+    @Test
+    public void testEquals() {
+        JNeuro.PoolingLayer poolingLayer = new JNeuro.PoolingLayer();
+        JNeuro.PoolingLayer poolingLayer2 = new JNeuro.PoolingLayer();
+        assertEquals(poolingLayer, poolingLayer2);
+    }
+
 }
