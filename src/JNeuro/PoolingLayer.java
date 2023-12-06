@@ -91,22 +91,13 @@ public class PoolingLayer implements Layer, java.io.Serializable {
     public boolean equals(Object obj) {
         if (obj instanceof PoolingLayer) {
             PoolingLayer poolingLayer = (PoolingLayer) obj;
-            if (poolingLayer.input == null && this.input == null) {
+            // if the two layers are both new created, then they are equal
+            if (poolingLayer.input == null && this.input == null && poolingLayer.output == null
+                    && this.output == null) {
                 return true;
             }
-            if (poolingLayer.input == null && this.input != null) {
-                return false;
-            }
-            if (poolingLayer.input != null && this.input == null) {
-                return false;
-            }
-            if (poolingLayer.output == null && this.output == null) {
-                return true;
-            }
-            if (poolingLayer.output == null && this.output != null) {
-                return false;
-            }
-            if (poolingLayer.output != null && this.output == null) {
+            if (poolingLayer.input == null || this.input == null || poolingLayer.output == null
+                    || this.output == null) {
                 return false;
             }
             if (this.input.length != poolingLayer.input.length) {
