@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
-import org.junit.experimental.theories.ParametersSuppliedBy;
 
 import JNeuro.MathUtil;
 
