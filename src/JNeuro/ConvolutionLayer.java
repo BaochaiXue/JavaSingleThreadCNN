@@ -55,12 +55,12 @@ public class ConvolutionLayer implements Layer, java.io.Serializable {
                     for (int k = 0; k < filters.length; k++) {
                         deltaFilters[k] = MathUtil.matrixAdd(deltaFilters[k],
                                 MathUtil.scaling(
-                                        MathUtil.submatrixAndFillZero(back[s * filters.length + k],
+                                        MathUtil.submatrixAndFillZero(this.sensingFields[s],
                                                 i - filters[0].length / 2,
                                                 i + filters[0].length / 2,
                                                 j - filters[0][0].length / 2,
                                                 j + filters[0][0].length / 2),
-                                        this.sensingFields[s][i][j]));
+                                        back[s * filters.length + k][i][j]));
                     }
                 }
             }
