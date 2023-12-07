@@ -9,6 +9,8 @@ import java.io.ObjectInputStream;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
+
 public class TestPoolingLayer {
     @Test
     public void testForward() {
@@ -118,7 +120,8 @@ public class TestPoolingLayer {
             c.printStackTrace();
             return;
         }
-        assertEquals(poolingLayer, poolingLayer2);
+        assertArrayEquals(poolingLayer.getInput(), poolingLayer2.getInput());
+        assertArrayEquals(poolingLayer.getOutput(), poolingLayer2.getOutput());
     }
 
     @Test
@@ -144,22 +147,10 @@ public class TestPoolingLayer {
         JNeuro.PoolingLayer poolingLayer = new JNeuro.PoolingLayer();
         poolingLayer.forward(input);
         poolingLayer.save("testPoolingLayer");
-        JNeuro.PoolingLayer poolingLayer2 = null;
-        try {
-            FileInputStream fileIn = new FileInputStream("testPoolingLayer");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            poolingLayer2 = (JNeuro.PoolingLayer) in.readObject();
-            in.close();
-            fileIn.close();
-        } catch (IOException i) {
-            i.printStackTrace();
-            return;
-        } catch (ClassNotFoundException c) {
-            System.out.println("PoolingLayer class not found");
-            c.printStackTrace();
-            return;
-        }
-        assertEquals(poolingLayer, poolingLayer2);
+        JNeuro.PoolingLayer poolingLayer2 = new JNeuro.PoolingLayer();
+        poolingLayer2.load("testPoolingLayer");
+        assertArrayEquals(poolingLayer.getInput(), poolingLayer2.getInput());
+        assertArrayEquals(poolingLayer.getOutput(), poolingLayer2.getOutput());
     }
 
     @Test
@@ -179,7 +170,9 @@ public class TestPoolingLayer {
         JNeuro.PoolingLayer loadLayer = new JNeuro.PoolingLayer();
         loadLayer.load(pathDoNotExist);
         JNeuro.PoolingLayer emptyLayer = new JNeuro.PoolingLayer();
-        assertEquals(emptyLayer, loadLayer);
+        // We check the two values of input and output
+        assertArrayEquals(emptyLayer.getInput(), loadLayer.getInput());
+        assertArrayEquals(emptyLayer.getOutput(), loadLayer.getOutput());
     }
 
     @Test
@@ -188,14 +181,22 @@ public class TestPoolingLayer {
         JNeuro.PoolingLayer loadLayer = new JNeuro.PoolingLayer();
         loadLayer.load(pathDoNotExist);
         JNeuro.PoolingLayer emptyLayer = new JNeuro.PoolingLayer();
-        assertEquals(emptyLayer, loadLayer);
+        // We check the two values of input and output
+        assertArrayEquals(emptyLayer.getInput(), loadLayer.getInput());
+        assertArrayEquals(emptyLayer.getOutput(), loadLayer.getOutput());
     }
 
     @Test
-    public void testEquals() {
-        JNeuro.PoolingLayer poolingLayer = new JNeuro.PoolingLayer();
-        JNeuro.PoolingLayer poolingLayer2 = new JNeuro.PoolingLayer();
-        assertEquals(poolingLayer, poolingLayer2);
+    public void testLoad4() {
+        // test to raise class not found exception
+        String path = "testForAllLoad";
+        JNeuro.PoolingLayer loadLayer = new JNeuro.PoolingLayer();
+        loadLayer.load(path);
+        JNeuro.PoolingLayer emptyLayer = new JNeuro.PoolingLayer();
+        // We check the two values of input and output
+        assertArrayEquals(emptyLayer.getInput(), loadLayer.getInput());
+        assertArrayEquals(emptyLayer.getOutput(), loadLayer.getOutput());
+
     }
 
 }

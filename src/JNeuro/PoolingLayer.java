@@ -81,63 +81,17 @@ public class PoolingLayer implements Layer, java.io.Serializable {
             i.printStackTrace();
             return;
         } catch (ClassNotFoundException c) {
-            System.out.println("this class can transfer to pooling layer");
+            System.out.println("PoolingLayer class not found");
             c.printStackTrace();
             return;
         }
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof PoolingLayer) {
-            PoolingLayer poolingLayer = (PoolingLayer) obj;
-            // if the two layers are both new created, then they are equal
-            if (poolingLayer.input == null && this.input == null && poolingLayer.output == null
-                    && this.output == null) {
-                return true;
-            }
-            if (poolingLayer.input == null || this.input == null || poolingLayer.output == null
-                    || this.output == null) {
-                return false;
-            }
-            if (this.input.length != poolingLayer.input.length) {
-                return false;
-            }
-            if (this.input[0].length != poolingLayer.input[0].length) {
-                return false;
-            }
-            if (this.input[0][0].length != poolingLayer.input[0][0].length) {
-                return false;
-            }
-            if (this.output.length != poolingLayer.output.length) {
-                return false;
-            }
-            if (this.output[0].length != poolingLayer.output[0].length) {
-                return false;
-            }
-            if (this.output[0][0].length != poolingLayer.output[0][0].length) {
-                return false;
-            }
-            for (int i = 0; i < this.input.length; i++) {
-                for (int j = 0; j < this.input[0].length; j++) {
-                    for (int k = 0; k < this.input[0][0].length; k++) {
-                        if (Math.abs(this.input[i][j][k] - poolingLayer.input[i][j][k]) > 1e-10) {
-                            return false;
-                        }
-                    }
-                }
-            }
-            for (int i = 0; i < this.output.length; i++) {
-                for (int j = 0; j < this.output[0].length; j++) {
-                    for (int k = 0; k < this.output[0][0].length; k++) {
-                        if (Math.abs(this.output[i][j][k] - poolingLayer.output[i][j][k]) > 1e-10) {
-                            return false;
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-        return false;
+    public double[][][] getInput() {
+        return input;
+    }
+
+    public double[][][] getOutput() {
+        return output;
     }
 }
