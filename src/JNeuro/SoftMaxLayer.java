@@ -46,7 +46,7 @@ public class SoftMaxLayer implements Layer, java.io.Serializable {
     }
 
     @Override
-    public double[][][] backPropagation(double[][][] deltaOutput3D, double learning_rate) {
+    public double[][][] backPropagation(double[][][] deltaOutput3D, double learningRate) {
         double[][] deltaOutput = MathUtil.flatten(deltaOutput3D);
         double[][] delta = new double[1][deltaOutput[0].length];
         double[][] exp = MathUtil.exp(output);
@@ -66,8 +66,8 @@ public class SoftMaxLayer implements Layer, java.io.Serializable {
             double[][] moveWeight = MathUtil.matrixMutiplication(deltaWeight, delta);
             deltaInput = MathUtil.matrixMutiplication(moveInput, MathUtil.transpose(delta));
             double[][] deltaLoss = delta;
-            weights = MathUtil.matrixAdd(MathUtil.scaling(moveWeight, -learning_rate), weights);
-            bias = MathUtil.matrixAdd(MathUtil.scaling(deltaLoss, -learning_rate), bias);
+            weights = MathUtil.matrixAdd(MathUtil.scaling(moveWeight, -learningRate), weights);
+            bias = MathUtil.matrixAdd(MathUtil.scaling(deltaLoss, -learningRate), bias);
         }
         return MathUtil.reshape(MathUtil.transpose(deltaInput), depth, height, width);
     }

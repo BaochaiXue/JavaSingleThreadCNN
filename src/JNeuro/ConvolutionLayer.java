@@ -47,7 +47,7 @@ public class ConvolutionLayer implements Layer, java.io.Serializable {
     }
 
     @Override
-    public double[][][] backPropagation(double[][][] back, double learning_rate) {
+    public double[][][] backPropagation(double[][][] back, double learningRate) {
         double[][][] deltaFilters = new double[filters.length][filters[0].length][filters[0][0].length];
         for (int s = 0; s < this.sensingFields.length; s++) {
             for (int i = 0; i < this.sensingFields[0].length; i++) {
@@ -67,7 +67,7 @@ public class ConvolutionLayer implements Layer, java.io.Serializable {
         }
 
         for (int m = 0; m < filters.length; m++) {
-            filters[m] = MathUtil.matrixAdd(filters[m], MathUtil.scaling(deltaFilters[m], -learning_rate));
+            filters[m] = MathUtil.matrixAdd(filters[m], MathUtil.scaling(deltaFilters[m], -learningRate));
         }
 
         double[][][] result = new double[sensingFields.length][sensingFields[0].length][sensingFields[0][0].length];
@@ -120,6 +120,14 @@ public class ConvolutionLayer implements Layer, java.io.Serializable {
             c.printStackTrace();
             return;
         }
+    }
+
+    public double[][][] getFilters() {
+        return this.filters;
+    }
+
+    public double[][][] getSensingFields() {
+        return this.sensingFields;
     }
 
 }
