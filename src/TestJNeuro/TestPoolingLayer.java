@@ -86,9 +86,9 @@ public class TestPoolingLayer {
     @Test
     public void testSave() {
         JNeuro.PoolingLayer poolingLayer = new JNeuro.PoolingLayer();
-        poolingLayer.save("testPoolingLayer");
+        poolingLayer.save("testSupport/testPoolingLayer");
         // check if the file exists
-        java.io.File file = new java.io.File("testPoolingLayer");
+        java.io.File file = new java.io.File("testSupport/testPoolingLayer");
         assertEquals(true, file.exists());
     }
 
@@ -104,10 +104,10 @@ public class TestPoolingLayer {
         }
         JNeuro.PoolingLayer poolingLayer = new JNeuro.PoolingLayer();
         poolingLayer.forward(input);
-        poolingLayer.save("testPoolingLayer");
+        poolingLayer.save("testSupport/testPoolingLayer");
         JNeuro.PoolingLayer poolingLayer2 = null;
         try {
-            FileInputStream fileIn = new FileInputStream("testPoolingLayer");
+            FileInputStream fileIn = new FileInputStream("testSupport/testPoolingLayer");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             poolingLayer2 = (JNeuro.PoolingLayer) in.readObject();
             in.close();
@@ -126,7 +126,7 @@ public class TestPoolingLayer {
 
     @Test
     public void testSave3() {
-        String pathDoNotExist = "model/testPoolingLayer";
+        String pathDoNotExist = "testSupport/model/testPoolingLayer";
         JNeuro.PoolingLayer poolingLayer = new JNeuro.PoolingLayer();
         poolingLayer.save(pathDoNotExist);
         // check if the file exists
@@ -146,9 +146,9 @@ public class TestPoolingLayer {
         }
         JNeuro.PoolingLayer poolingLayer = new JNeuro.PoolingLayer();
         poolingLayer.forward(input);
-        poolingLayer.save("testPoolingLayer");
+        poolingLayer.save("testSupport/testPoolingLayer");
         JNeuro.PoolingLayer poolingLayer2 = new JNeuro.PoolingLayer();
-        poolingLayer2.load("testPoolingLayer");
+        poolingLayer2.load("testSupport/testPoolingLayer");
         assertArrayEquals(poolingLayer.getInput(), poolingLayer2.getInput());
         assertArrayEquals(poolingLayer.getOutput(), poolingLayer2.getOutput());
     }
@@ -163,7 +163,7 @@ public class TestPoolingLayer {
                 }
             }
         }
-        String pathDoNotExist = "model/testPoolingLayer";
+        String pathDoNotExist = "testSupport/model/testPoolingLayer";
         JNeuro.PoolingLayer poolingLayer = new JNeuro.PoolingLayer();
         poolingLayer.forward(input);
         poolingLayer.save(pathDoNotExist);
@@ -177,7 +177,7 @@ public class TestPoolingLayer {
 
     @Test
     public void testLoad3() {
-        String pathDoNotExist = "model/testPoolingLayer";
+        String pathDoNotExist = "testSupport/model/testPoolingLayer";
         JNeuro.PoolingLayer loadLayer = new JNeuro.PoolingLayer();
         loadLayer.load(pathDoNotExist);
         JNeuro.PoolingLayer emptyLayer = new JNeuro.PoolingLayer();
@@ -189,7 +189,7 @@ public class TestPoolingLayer {
     @Test
     public void testLoad4() {
         // test to raise class not found exception
-        String path = "testForAllLoad";
+        String path = "testSupport/testForAllLoad";
         JNeuro.PoolingLayer loadLayer = new JNeuro.PoolingLayer();
         loadLayer.load(path);
         JNeuro.PoolingLayer emptyLayer = new JNeuro.PoolingLayer();
