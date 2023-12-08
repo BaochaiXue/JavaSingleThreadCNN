@@ -114,4 +114,20 @@ public class SoftMaxLayer implements Layer, java.io.Serializable {
             return;
         }
     }
+
+    public double[][] getWeights() {
+        return weights;
+    }
+
+    public double[][] getInput() {
+        return input;
+    }
+
+    public double[][] getBias() {
+        return bias;
+    }
+
+    public double[][] getOutput() {
+        return output;
+    }
 }
