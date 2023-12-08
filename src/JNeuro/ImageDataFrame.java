@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 public class ImageDataFrame {
-    protected class DigitalizedImage {
+    protected static class DigitalizedImage {
         private double[][][] image;
         private int label;
 
