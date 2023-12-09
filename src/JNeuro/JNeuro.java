@@ -18,7 +18,7 @@ public class JNeuro {
     }
 
     public static void main(String[] args) throws IOException {
-        train(300000, "data/training", "weight", true);
+        train(3000, "data/training", "weight", false);
         test(1000, "data/training", "weight");
         System.out.println(recoginizeImage("data/0.jpg", "weight"));
     }

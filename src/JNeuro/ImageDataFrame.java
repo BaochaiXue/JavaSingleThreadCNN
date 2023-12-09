@@ -55,6 +55,9 @@ public class ImageDataFrame {
     private static BufferedImage[] loadAllImages(String path, int label) throws IOException {
         File folder = new File(path + "/" + label);
         File[] listOfFiles = folder.listFiles();
+        if (listOfFiles == null) {
+            throw new IOException("the folder { " + path + "/" + label + " } is not found");
+        }
         // erase the file that is not a image
         for (int i = 0; i < listOfFiles.length; i++) {
             if (!listOfFiles[i].getName().endsWith(".png")) {
@@ -93,35 +96,23 @@ public class ImageDataFrame {
         // randomly give the index a start value
         Random rand = new Random();
         for (int i = 0; i < 10; i++) {
+            if (this.data.get(i).size() == 0) {
+                throw new RuntimeException("the label " + i + " is empty");
+            }
             this.index.put(i, rand.nextInt(this.data.get(i).size()));
         }
     }
 
     public double[][][] sampledFromLabel(int label) throws RuntimeException {
         Random rand = new Random();
-        // check empty
-        if (this.data.get(label).size() == 0) {
-            throw new RuntimeException("the label " + label + " is empty");
-        }
         int index = rand.nextInt(this.data.get(label).size());
-        // check if the image is null
-        while (this.data.get(label).get(index).getImage() == null) {
-            index = rand.nextInt(this.data.get(label).size());
-        }
         return this.data.get(label).get(index).getImage();
     }
 
     private Map<Integer, Integer> index;
 
     public double[][][] sampledFromLabelIncrementally(int label) throws RuntimeException {
-        if (this.data.get(label).size() == 0) {
-            throw new RuntimeException("the label " + label + " is empty");
-        }
         int index = this.index.get(label);
-        // check if the image is null
-        if (this.data.get(label).get(index).getImage() == null) {
-            throw new RuntimeException("the image is null");
-        }
         this.index.put(label, (index + 1) % this.data.get(label).size());
         return this.data.get(label).get(index).getImage();
     }

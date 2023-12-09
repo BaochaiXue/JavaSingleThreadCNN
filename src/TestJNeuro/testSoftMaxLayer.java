@@ -33,6 +33,19 @@ public class testSoftMaxLayer {
     }
 
     @Test
+    public void testBackPropagation2() {
+        double[][][] input = new double[3][20][20];
+        SoftMaxLayer layer = new SoftMaxLayer(3, 20, 20, 1, 1, 10);
+        layer.forward(input);
+        double[][][] output = new double[1][1][10];
+        output[0][0][0] = 1;
+        double[][][] delta = layer.backPropagation(output, 0.1);
+        assertEquals(3, delta.length);
+        assertEquals(20, delta[0].length);
+        assertEquals(20, delta[0][0].length);
+    }
+
+    @Test
     public void testSave() {
         SoftMaxLayer layer = new SoftMaxLayer(3, 20, 20, 1, 1, 10);
         layer.save("testSupport/testSoftMaxLayer");
