@@ -57,7 +57,6 @@ public class ConvolutionalNeuralNetwork {
         double totalAccuracy = 0.0;
         double learnRate = isStartNewly ? 0.005 : 0.001;
         double[][][] softmaxResult3D;
-        double lastAccuracy = 0.0;
         for (int step = 1; step <= trainningSize; step++) {
             double[][][] pixels = trainningData.sampledFromLabelIncrementally(trueLabel);
             int correct_label = trueLabel;
@@ -69,12 +68,8 @@ public class ConvolutionalNeuralNetwork {
             double[][] gradient = MathUtil.zeros(1, 10);
             gradient[0][correct_label] = -1 / softmaxResult[0][correct_label];
             this.backPropagation(MathUtil.reshape(gradient, 1, 1, 10), learnRate);
-            learnRate *= 0.99999; // learning rate decay
+            learnRate *= isStartNewly ? 0.99999 : 0.999; // learning rate decay
             if (step % 1000 == 0) {
-                if (lastAccuracy > accuracy) {
-                    learnRate *= 0.5;
-                }
-                lastAccuracy = accuracy;
                 System.out
                         .println(" step: " + step + " loss: " + loss / 1000.0 + " accuracy: " + accuracy / 10.0 + "%"
                                 + " learnRate: " + learnRate);

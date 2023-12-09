@@ -3,6 +3,8 @@ package TestJNeuro;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
+
 import org.junit.Test;
 
 import JNeuro.ImageDataFrame;
@@ -51,6 +53,12 @@ public class testImageDataFrame {
         } catch (Exception e) {
             assertEquals("the label 9 is empty", e.getMessage());
         }
+        // we try to create files that do not end with .png
+        File file = new File("testSupport/training/0");
+        file.mkdir();
+        file = new File("testSupport/training/0/0");
+        file.mkdir();
+        file = new File("testSupport/training/0/0/0");
         imageDataFrame = new ImageDataFrame("testSupport/testing");
         double[][][] image = new double[1][28][28];
         for (int label = 0; label < 10; label++) {

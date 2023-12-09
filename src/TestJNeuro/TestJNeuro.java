@@ -31,4 +31,10 @@ public class TestJNeuro {
         }
     }
 
+    @Test
+    public void TestJNeuroAll() {
+        JNeuro jneuro = new JNeuro();
+        assertEquals(jneuro.getClass().getName(), "JNeuro.JNeuro");
+    }
+
 }
