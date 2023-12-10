@@ -33,9 +33,6 @@ public class testConvolutionLayer {
             }
         }
         double[][][] output = layer.forward(input);
-        System.out.println(output.length);
-        System.out.println(output[0].length);
-        System.out.println(output[0][0].length);
         assertEquals(3, output.length);
         assertEquals(5, output[0].length);
         assertEquals(5, output[0][0].length);
