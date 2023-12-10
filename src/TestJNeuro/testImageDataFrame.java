@@ -59,6 +59,7 @@ public class testImageDataFrame {
         file = new File("testSupport/training/0/0");
         file.mkdir();
         file = new File("testSupport/training/0/0/0");
+        file.mkdir();
         imageDataFrame = new ImageDataFrame("testSupport/testing");
         double[][][] image = new double[1][28][28];
         for (int label = 0; label < 10; label++) {
